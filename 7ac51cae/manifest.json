@@ -1,0 +1,59 @@
+{
+  "name" : "uilogos",
+  "host" : {
+    "app" : "XD",
+    "minVersion" : "13.0.0"
+  },
+  "description" : "Insert professionally designed dummy logo of companies",
+  "id" : "7ac51cae",
+  "icons" : [ {
+    "path" : "resources/icon.png",
+    "width" : 96,
+    "height" : 96
+  } ],
+  "uiEntryPoints" : [
+    {
+      "type": "menu",
+      "label": "uiLogos",
+      "menuItems": [
+        {
+          "type": "menu",
+          "label": "Color Logotype",
+          "commandId": "getColorLogotype",
+          "shortcut": {
+            "mac": "Ctrl+Shift+R",
+            "win": "Ctrl+Shift+R"
+          }
+        },
+        {
+          "type": "menu",
+          "label": "Black Logotype",
+          "commandId": "getBlackLogotype",
+          "shortcut": {
+            "mac": "Ctrl+Shift+D",
+            "win": "Ctrl+Shift+D"
+          }
+        },
+        {
+          "type": "menu",
+          "label": "Color Logomark",
+          "commandId": "getColorLogomark",
+          "shortcut": {
+            "mac": "Ctrl+Shift+M",
+            "win": "Ctrl+Shift+M"
+          }
+        },
+        {
+          "type": "menu",
+          "label": "Black Logomark",
+          "commandId": "getBlackLogomark",
+          "shortcut": {
+            "mac": "Ctrl+Shift+K",
+            "win": "Ctrl+Shift+K"
+          }
+        }
+      ]
+    }
+],
+  "version" : "0.1.0"
+}
