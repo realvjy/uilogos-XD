@@ -8,10 +8,14 @@
 ### Logotype
 ![Generating thumbnails](https://raw.githubusercontent.com/realvjy/uilogos-XD/master/demo/uilogos-logotype.gif)
 
-## Installation
+## Installation (Waiting For review)
 1. In Adobe XD app `Plugins` > `Discover Plugins...`
 2. In the Discover window > Search `uilogos`.
 3. Click on `install`
+
+## Manual Installation
+1. Download [uilogos.xdx](https://github.com/realvjy/uilogos-XD/releases/download/0.2.0/uilogos_download-and-double-click-to-install.xdx)
+2. Double click on `.xdx` file to install
 
 ## How to use
 1. Select `Rectangle` Shapes
