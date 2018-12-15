@@ -7,6 +7,7 @@
 const scenegraph = require("scenegraph");
 const fs = require("uxp").storage.localFileSystem;
 const { ImageFill } = require("scenegraph");
+const diag = require('./dialog.js');
 
 var selectedShapes = null;
 
@@ -59,33 +60,34 @@ async function getLogos(selection, type, color) {
         }
       });
     } catch (e) {
-      console.log(e);
+      diag.showDialog('#alertDialog',e);
     }
   } else {
-    console.log('no any logos found');
+    diag.showDialog('#infoDialog', 'Please select rectangele shapes');
   }
 }
 
 // Get Rectangle and oval Shapes
 async function fillLogos(selection, allLogos) {
-  // showDialog("#alertDialog", 'Message');
   shuffle(allLogos);
   var imageCount = allLogos.length;
   if (imageCount != 0 && imageCount >= selection.items.length) {
     for (var i = 0; i < selection.items.length; i++) {
-      if (selection.items[i] instanceof scenegraph.Rectangle || selection.items[i] instanceof scenegraph.Ellipse) {
+      if (selection.items[i] instanceof scenegraph.Rectangle) {
         try {
           var logoObj = await getLogo(allLogos[i]);
           fillSelectionWithLogo(selection.items[i], logoObj);
         } catch (e) {
           console.log(e);
+        } finally {
+          diag.showDialog('#alertDialog',selection.items.length+' shapes filled with logo');
         }
       } else {
-        console.log('please select elipse or rectangle');
+        diag.showDialog('#infoDialog', 'Please select shapes');
       }
     }
   } else {
-    console.log('too many selection');
+    diag.showDialog('#alertDialog', selection.items.length+' shapes! Please select upto '+allLogos.length+' Shapes');
   }
 }
 
@@ -142,7 +144,7 @@ function getFrameSize(selectedPath, image){
     var newHeight = 100;
     var coordiBounds = selectedPath.boundsInParent;
     // Decide the output frame dimension for reference
-    if (selectedPath instanceof scenegraph.Rectangle || selectedPath instanceof scenegraph.Ellipse) {
+    if (selectedPath instanceof scenegraph.Rectangle) {
       newX = coordiBounds.x;
       newY = coordiBounds.y;
       newWidth = coordiBounds.width;
@@ -170,8 +172,6 @@ function getFrameSize(selectedPath, image){
 
     return newBounds;
 }
-
-
 module.exports = {
   commands: {
     getColorLogotype: async function (selection) {

@@ -4,7 +4,7 @@
     "app" : "XD",
     "minVersion" : "13.0.0"
   },
-  "description" : "Insert professionally designed dummy logo of companies",
+  "description" : "Insert professionally designed dummy logos of companies",
   "id" : "7ac51cae",
   "icons" : [ {
     "path" : "resources/icon.png",
@@ -55,5 +55,5 @@
       ]
     }
 ],
-  "version" : "0.1.0"
+  "version" : "0.2.0"
 }
