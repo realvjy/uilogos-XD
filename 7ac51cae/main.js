@@ -34,9 +34,6 @@ async function generateLogos(type, color) {
   const resourceFolder = await getFolderData(pluginEntries, 'resources');
   const logosFolder = await getFolderData(resourceFolder, 'logos');
   let logoTypeFolder;
-  const allLogos = [];
-  // logos.forEach(logo => console.log(logo.name));
-  //Final Logo folder
   if (type == 'full-logo') {
     logoTypeFolder = await getFolderData(logosFolder, 'full-logo');
   }
@@ -46,10 +43,7 @@ async function generateLogos(type, color) {
   }
 
   // Get logos array
-  let logos = await getFolderData(logoTypeFolder, color);
-  for (var i = 0; i < logos.length; i++) {
-    allLogos.push(logos[i]);
-  }
+  const allLogos = await getFolderData(logoTypeFolder, color);
 
   return allLogos;
 }
@@ -98,9 +92,13 @@ async function fillLogos(selection, allLogos) {
 // Fill selected shape with image/logo
 function fillSelectionWithLogo(selectedPath, image) {
   const imageFill = new ImageFill(image);
-  console.log(imageFill.naturalWidth);
-  console.log(imageFill.naturalHeight);
-  console.log(selectedPath);
+  let newBounds = getFrameSize(selectedPath, imageFill);
+  selectedPath.height = newBounds.height;
+  selectedPath.width = newBounds.width;
+  selectedPath.x = newBounds.x;
+  selectedPath.y = newBounds.y;
+  selectedPath.strokeEnabled = false;
+  selectedPath.name = image.name.split('.').slice(0, -1).join('.');
   selectedPath.fill = imageFill;
 }
 
@@ -135,44 +133,44 @@ async function getFolderData(entries, folderName) {
 
 
 // Frame Size for image repace
-function getFrameSize(selectedLayer){
+function getFrameSize(selectedPath, image){
 
     // Default dimentions
     var newX = 0;
     var newY = 0;
     var newWidth = 100;
     var newHeight = 100;
+    var coordiBounds = selectedPath.boundsInParent;
+    // Decide the output frame dimension for reference
+    if (selectedPath instanceof scenegraph.Rectangle || selectedPath instanceof scenegraph.Ellipse) {
+      newX = coordiBounds.x;
+      newY = coordiBounds.y;
+      newWidth = coordiBounds.width;
+      newHeight = coordiBounds.height;
+    }
+
+    // Decide the height and width
+    var ratio = image.naturalWidth/image.naturalHeight;
+
+    var newHeight = newHeight;
+    var newWidth = image.naturalWidth/ratio;
+
+    // Check for Portrait Logo
+    if(newWidth > coordiBounds.width) {
+        newHeight = coordiBounds.height;
+        newWidth = newHeight*ratio;
+    }
 
 
+    // Decide location center align with shape
+    var newX = coordiBounds.x + (coordiBounds.width - newWidth)/2;
+    var newY = coordiBounds.y + (coordiBounds.height - newHeight)/2;
 
-    // // Decide the output frame dimension for reference
-    // if (isRectangleShape(selectedLayer) || isOvalShape(selectedLayer)) {
-    //   newX = selectedLayer.frame().x();
-    //   newY = selectedLayer.frame().y();
-    //   newWidth = selectedLayer.frame().width();
-    //   newHeight = selectedLayer.frame().height();
-    // }
-    //
-    // // // Decide the height and width
-    // var ratio = originalSize.height/originalSize.width;
-    //
-    //
-    // var newHeight = newHeight;
-    // var newWidth = newHeight/ratio;
-    //
-    // // Check for portrait logo
-    // if(newWidth > selectedLayer.width) {
-    //     newWidth = selectedLayer.height;
-    //     newHeight = newWidth*ratio;
-    // }
-    //
-    //
-    // // Decide location center align with shape
-    // var newX = selectedLayer.frame().x() + (selectedLayer.frame().width() - newWidth)/2;
-    // var newY = selectedLayer.frame().y() + (selectedLayer.frame().height() - newHeight)/2;
-    //
-    // return CGRectMake(newX,newY,newWidth,newHeight);
+    var newBounds = {x: newX, y: newY, height: newHeight, width: newWidth};
+
+    return newBounds;
 }
+
 
 module.exports = {
   commands: {
@@ -185,21 +183,21 @@ module.exports = {
     },
     getBlackLogotype: async function (selection) {
       try {
-        console.log('Black logotype');
+        await getLogos(selection, 'full-logo', 'black');
       } catch (error) {
         console.log(error)
       }
     },
     getColorLogomark: async function (selection) {
       try {
-        console.log('Color Logomark');
+        await getLogos(selection, 'mark', 'color');
       } catch (error) {
         console.log(error)
       }
     },
     getBlackLogomark: async function (selection) {
       try {
-        console.log('Black logomark');
+        await getLogos(selection, 'mark', 'black');
       } catch (error) {
         console.log(error)
       }
