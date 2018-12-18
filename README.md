@@ -8,7 +8,7 @@
 ### Logotype
 ![Generating thumbnails](https://raw.githubusercontent.com/realvjy/uilogos-XD/master/demo/uilogos-logotype.gif)
 
-## Installation (Waiting For review)
+## Installation
 1. In Adobe XD app `Plugins` > `Discover Plugins...`
 2. In the Discover window > Search `uilogos`.
 3. Click on `install`
