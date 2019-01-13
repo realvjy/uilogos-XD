@@ -2,6 +2,8 @@
 * uiLogos for Adobe XD by @realvjy
 * Visit https://uilogos.co/xd-plugin
 * Created date: Dec 2018
+* Updated date: 12 Jan 2018
+* Version 0.3.0
 */
 
 const scenegraph = require("scenegraph");
@@ -43,6 +45,10 @@ async function generateLogos(type, color) {
     logoTypeFolder = await getFolderData(logosFolder, 'mark');
   }
 
+  if (type == 'flags') {
+    logoTypeFolder = await getFolderData(logosFolder, 'flags');
+  }
+
   // Get logos array
   const allLogos = await getFolderData(logoTypeFolder, color);
 
@@ -67,6 +73,7 @@ async function getLogos(selection, type, color) {
   }
 }
 
+
 // Get Rectangle and oval Shapes
 async function fillLogos(selection, allLogos) {
   shuffle(allLogos);
@@ -80,7 +87,7 @@ async function fillLogos(selection, allLogos) {
         } catch (e) {
           console.log(e);
         } finally {
-          diag.showDialog('#alertDialog',selection.items.length+' shapes filled with logo');
+          diag.showDialog('#alertDialog',selection.items.length+' shapes filled with logo or flag');
         }
       } else {
         diag.showDialog('#infoDialog', 'Please select shapes');
@@ -198,6 +205,14 @@ module.exports = {
     getBlackLogomark: async function (selection) {
       try {
         await getLogos(selection, 'mark', 'black');
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    // Method for flag 12 Jan
+    getCountryFlag: async function (selection) {
+      try{
+        await getLogos(selection, 'flags', 'color');
       } catch (error) {
         console.log(error)
       }
